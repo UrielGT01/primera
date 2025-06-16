@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏊 SWIMMING POOL vs BOXING RING 🥊</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Exo+2:wght@100;300;400;600;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --swim-primary: #007bff; /* Azul para natación */
+            --swim-secondary: #0056b3; /* Azul más oscuro */
+            --swim-accent: #66b2ff; /* Azul claro */
+            --swim-deep: #002c4f; /* Azul muy oscuro */
+            
+            --box-primary: #dc3545; /* Rojo para boxeo */
+            --box-secondary: #a71d2a; /* Rojo más oscuro */
+            --box-accent: #ff6347; /* Naranja rojizo */
+            --box-deep: #5e0000; /* Rojo muy oscuro */
+            
+            --cosmic-purple: #8a2be2;
+            --neon-green: #39ff14;
+            --void-black: #0a0a0a;
+            --gold: #ffd700;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: var(--void-black);
+            color: #ffffff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* CURSOR PERSONALIZADO MEJORADO */
+        .cursor {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--swim-primary); /* Cambiado a color de natación */
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor.fire-mode { /* Renombrado a box-mode en JS, pero se mantiene para la clase */
+            border-color: var(--box-primary); /* Cambiado a color de boxeo */
+            box-shadow: 0 0 20px var(--box-primary); /* Cambiado a color de boxeo */
+            animation: fire-cursor 0.5s ease-in-out infinite alternate;
+        }
+
+        /* NAVEGACIÓN ORBITAL MEJORADA */
+        .orbital-nav {
+            position: fixed;
+            top: 50px;
+            right: 50px;
+            width: 120px;
+            height: 120px;
+            z-index: 1000;
+        }
+
+        .nav-orbit {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            animation: orbit 20s linear infinite;
+        }
+
+        .nav-planet {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-planet.aqua { /* Renombrado a swim */
+            background: radial-gradient(circle, var(--swim-primary), var(--swim-secondary)); /* Cambiado a color de natación */
+            top: -10px;
+            left: calc(50% - 10px);
+            animation: pulse-aqua 2s ease-in-out infinite; /* Animación se mantiene, colores cambian por CSS vars */
+        }
+
+        .nav-planet.fire { /* Renombrado a box */
+            background: radial-gradient(circle, var(--box-primary), var(--box-secondary)); /* Cambiado a color de boxeo */
+            bottom: -10px;
+            right: calc(50% - 10px);
+            animation: pulse-fire 2s ease-in-out infinite; /* Animación se mantiene, colores cambian por CSS vars */
+        }
+
+        .nav-planet:hover {
+            transform: scale(1.5);
+            box-shadow: 0 0 30px currentColor;
+        }
+
+        /* HEADER CÓSMICO MEJORADO */
+        .cosmic-header {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(0,123,255,0.2) 0%, transparent 60%), /* Color de natación */
+                radial-gradient(ellipse at 80% 70%, rgba(220,53,69,0.2) 0%, transparent 60%), /* Color de boxeo */
+                linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            overflow: hidden;
+        }
+
+        .cosmic-title {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        .main-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--swim-primary), var(--box-primary), var(--cosmic-purple), var(--neon-green)); /* Colores de natación y boxeo */
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbow-shift 4s ease-in-out infinite;
+            text-shadow: 0 0 50px rgba(0,123,255,0.3); /* Color de natación */
+            margin-bottom: 30px;
+        }
+
+        .subtitle-tech {
+            font-size: 1.8rem;
+            color: var(--neon-green);
+            font-weight: 300;
+            letter-spacing: 3px;
+            margin-bottom: 50px;
+            animation: digital-glitch 3s infinite;
+        }
+
+        /* SISTEMA DE PARTÍCULAS MEJORADO */
+        .particle-system {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--swim-primary); /* Cambiado a color de natación */
+            border-radius: 50%;
+            animation: particle-float 8s linear infinite;
+        }
+
+        .particle.fire-particle { /* Renombrado a box-particle en JS */
+            background: var(--box-primary); /* Cambiado a color de boxeo */
+            animation: particle-float 6s linear infinite;
+        }
+
+        /* SECCIÓN ACUÁTICA MEJORADA */
+        .aqua-realm { /* Renombrado a swimming-pool-section */
+            min-height: 200vh;
+            background: 
+                linear-gradient(180deg, var(--void-black) 0%, var(--swim-deep) 30%, var(--swim-secondary) 70%, var(--swim-primary) 100%); /* Colores de natación */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wave-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 200px;
+            background: linear-gradient(90deg, transparent, rgba(0,123,255,0.15), transparent); /* Color de natación */
+            animation: wave-motion 8s ease-in-out infinite;
+        }
+
+        .wave:nth-child(1) { top: 20%; animation-delay: 0s; }
+        .wave:nth-child(2) { top: 40%; animation-delay: 2s; }
+        .wave:nth-child(3) { top: 60%; animation-delay: 4s; }
+        .wave:nth-child(4) { top: 80%; animation-delay: 6s; }
+
+        .aqua-content { /* Renombrado a swimming-content */
+            position: relative;
+            z-index: 10;
+            padding: 100px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .aqua-title { /* Renombrado a swimming-title */
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            color: var(--swim-primary); /* Color de natación */
+            text-align: center;
+            margin-bottom: 100px;
+            text-shadow: 0 0 30px var(--swim-primary); /* Color de natación */
+            animation: aqua-glow 3s ease-in-out infinite alternate; /* Animación se mantiene, colores cambian por CSS vars */
+        }
+
+        /* ESTRUCTURA DE BURBUJAS MEJORADA */
+        .bubble-network {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 60px;
+            margin: 100px 0;
+        }
+
+        .info-bubble {
+            position: relative;
+            background: rgba(0,123,255,0.08); /* Color de natación */
+            border: 2px solid var(--swim-primary); /* Color de natación */
+            border-radius: 50%;
+            width: 350px;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(15px);
+            animation: bubble-float 6s ease-in-out infinite;
+            margin: 0 auto;
+        }
+
+        .info-bubble:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 0 80px var(--swim-primary); /* Color de natación */
+            background: rgba(0,123,255,0.2); /* Color de natación */
+        }
+
+        .image-slot {
+            width: 120px;
+            height: 80px;
+            border: 2px dashed var(--swim-accent); /* Color de natación */
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            background: rgba(102,178,255,0.1); /* Color de natación */
+            font-size: 12px;
+            color: var(--swim-accent); /* Color de natación */
+            transition: all 0.3s ease;
+        }
+
+        .image-slot:hover {
+            background: rgba(102,178,255,0.25); /* Color de natación */
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--swim-accent); /* Color de natación */
+        }
+
+        /* PISCINA OLÍMPICA MEJORADA */
+        .olympic-pool {
+            margin: 150px 0;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .pool-structure {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, var(--swim-deep), var(--swim-secondary)); /* Colores de natación */
+            border-radius: 20px;
+            padding: 40px;
+            transform: rotateX(10deg);
+            box-shadow: 0 50px 100px rgba(0,123,255,0.3); /* Color de natación */
+        }
+
+        .pool-lanes {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 10px;
+            margin: 30px 0;
+        }
+
+        .lane {
+            height: 300px;
+            background: linear-gradient(180deg, var(--swim-primary), var(--swim-secondary)); /* Colores de natación */
+            border-radius: 5px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .lane:hover {
+            transform: translateY(-20px);
+            box-shadow: 0 20px 40px rgba(0,123,255,0.5); /* Color de natación */
+        }
+
+        .lane-number {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .lane-style {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* SECCIÓN DE BOXEO COMPLETAMENTE NUEVA */
+        .fire-arena { /* Renombrado a boxing-arena-section */
+            min-height: 250vh;
+            background: 
+                linear-gradient(180deg, var(--swim-primary) 0%, var(--void-black) 15%, var(--box-deep) 50%, var(--box-secondary) 85%, var(--box-primary) 100%); /* Colores de boxeo */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fire-particles { /* Renombrado a flame-particles */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .flame-particle {
+            position: absolute;
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(180deg, var(--box-primary), var(--box-accent), transparent); /* Colores de boxeo */
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: flame-dance 3s ease-in-out infinite;
+        }
+
+        .fire-content { /* Renombrado a boxing-content */
+            position: relative;
+            z-index: 10;
+            padding: 100px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .fire-title { /* Renombrado a boxing-title */
+            font-family: 'Orbitron', monospace;
+            font-size: 4rem;
+            color: var(--box-primary); /* Color de boxeo */
+            text-align: center;
+            margin-bottom: 100px;
+            text-shadow: 0 0 30px var(--box-primary); /* Color de boxeo */
+            animation: fire-glow 2s ease-in-out infinite alternate; /* Animación se mantiene, colores cambian por CSS vars */
+        }
+
+        /* ESTRUCTURA DE RING HEXAGONAL MEJORADA */
+        .hexagon-ring {
+            margin: 150px 0;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 700px;
+        }
+
+        .ring-structure {
+            width: 600px;
+            height: 600px;
+            position: relative;
+            transform: rotate(30deg);
+        }
+
+        .ring-side {
+            position: absolute;
+            width: 300px;
+            height: 60px;
+            background: linear-gradient(90deg, var(--box-primary), var(--box-accent), var(--box-primary)); /* Colores de boxeo */
+            transform-origin: center;
+            border-radius: 30px;
+            box-shadow: 0 0 20px var(--box-primary); /* Color de boxeo */
+        }
+
+        .ring-side:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%) rotate(0deg); }
+        .ring-side:nth-child(2) { top: 25%; right: 0; transform: rotate(60deg); }
+        .ring-side:nth-child(3) { bottom: 25%; right: 0; transform: rotate(120deg); }
+        .ring-side:nth-child(4) { bottom: 0; left: 50%; transform: translateX(-50%) rotate(180deg); }
+        .ring-side:nth-child(5) { bottom: 25%; left: 0; transform: rotate(240deg); }
+        .ring-side:nth-child(6) { top: 25%; left: 0; transform: rotate(300deg); }
+
+        .ring-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            width: 250px;
+            height: 250px;
+            background: rgba(220,53,69,0.15); /* Color de boxeo */
+            border: 3px solid var(--box-primary); /* Color de boxeo */
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            color: var(--box-primary); /* Color de boxeo */
+            font-weight: bold;
+        }
+
+        /* GRID DE TÉCNICAS DE BOXEO */
+        .boxing-techniques {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin: 100px 0;
+        }
+
+        .technique-card {
+            background: rgba(220,53,69,0.1); /* Color de boxeo */
+            border: 2px solid var(--box-accent); /* Color de boxeo */
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .technique-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--box-primary), var(--box-accent), var(--box-primary)); /* Colores de boxeo */
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .technique-card:hover::before {
+            opacity: 1;
+        }
+
+        .technique-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(220,53,69,0.3); /* Color de boxeo */
+        }
+
+        .technique-emoji {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .technique-name {
+            color: var(--box-primary); /* Color de boxeo */
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .technique-stats {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--box-accent); /* Color de boxeo */
+        }
+
+        /* ESTRUCTURA DE GUANTES ORBITALES MEJORADA */
+        .glove-constellation {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 150px 0;
+            flex-wrap: wrap;
+        }
+
+        .glove-orbit {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin: 50px;
+        }
+
+        .orbit-ring {
+            position: absolute;
+            border: 2px solid var(--box-accent); /* Color de boxeo */
+            border-radius: 50%;
+            animation: orbit-spin 15s linear infinite;
+        }
+
+        .orbit-ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .orbit-ring:nth-child(2) {
+            width: 70%;
+            height: 70%;
+            top: 15%;
+            left: 15%;
+            animation-duration: 10s;
+            animation-direction: reverse;
+        }
+
+        .info-glove {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, var(--box-primary), var(--box-secondary)); /* Colores de boxeo */
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 20px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 0 20px var(--box-primary); /* Color de boxeo */
+        }
+
+        .info-glove:hover {
+            transform: scale(1.4);
+            box-shadow: 0 0 60px var(--box-primary); /* Color de boxeo */
+        }
+
+        .glove-1 { top: -50px; left: calc(50% - 50px); }
+        .glove-2 { top: 50%; right: -50px; transform: translateY(-50%); }
+        .glove-3 { bottom: -50px; right: calc(50% - 50px); }
+        .glove-4 { top: 50%; left: -50px; transform: translateY(-50%); }
+
+        /* SECCIÓN DE COMPARACIÓN GALÁCTICA MEJORADA */
+        .galactic-comparison {
+            min-height: 120vh;
+            background: 
+                radial-gradient(ellipse at center, var(--cosmic-purple) 0%, var(--void-black) 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .galaxy-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 100px;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 50px;
+        }
+
+        .planet-system {
+            position: relative;
+            width: 450px;
+            height: 450px;
+        }
+
+        .planet-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            text-align: center;
+        }
+
+        .aqua-planet { /* Renombrado a swim-planet */
+            background: radial-gradient(circle, var(--swim-primary), var(--swim-deep)); /* Colores de natación */
+            box-shadow: 0 0 100px var(--swim-primary); /* Color de natación */
+            animation: planet-pulse-aqua 4s ease-in-out infinite; /* Animación se mantiene, colores cambian por CSS vars */
+        }
+
+        .fire-planet { /* Renombrado a box-planet */
+            background: radial-gradient(circle, var(--box-primary), var(--box-deep)); /* Colores de boxeo */
+            box-shadow: 0 0 100px var(--box-primary); /* Color de boxeo */
+            animation: planet-pulse-fire 3s ease-in-out infinite; /* Animación se mantiene, colores cambian por CSS vars */
+        }
+
+        .planet-core:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .satellite {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 8px;
+        }
+
+        .satellite:hover {
+            transform: scale(1.3);
+        }
+
+        .vs-portal {
+            width: 150px;
+            height: 150px;
+            border: 4px solid var(--neon-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--neon-green);
+            background: radial-gradient(circle, transparent, rgba(57,255,20,0.1));
+            animation: portal-spin 5s linear infinite;
+            position: relative;
+        }
+
+        .vs-portal::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--neon-green);
+            border-radius: 50%;
+            animation: portal-spin 3s linear infinite reverse;
+        }
+
+        /* GALERÍA DIMENSIONAL MEJORADA */
+        .dimensional-gallery {
+            margin: 200px 0;
+            perspective: 2000px;
+        }
+
+        .gallery-title {
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            color: var(--cosmic-purple);
+            margin-bottom: 100px;
+            text-shadow: 0 0 40px var(--cosmic-purple);
+        }
+
+        .dimension-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 60px;
+            padding: 0 50px;
+        }
+
+        .dimension-card {
+            height: 300px;
+            background: linear-gradient(135deg, rgba(138,43,226,0.15), rgba(57,255,20,0.15));
+            border: 2px solid var(--cosmic-purple);
+            border-radius: 25px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dimension-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--cosmic-purple), var(--neon-green), var(--cosmic-purple));
+            border-radius: 25px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .dimension-card:hover::before {
+            opacity: 1;
+        }
+
+        .dimension-card:hover {
+            transform: rotateY(15deg) rotateX(10deg) translateZ(50px);
+            box-shadow: 0 40px 80px rgba(138,43,226,0.4);
+        }
+
+        .image-portal {
+            width: 220px;
+            height: 140px;
+            border: 2px dashed var(--neon-green);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            background: rgba(57,255,20,0.08);
+            font-size: 14px;
+            color: var(--neon-green);
+            transition: all 0.3s ease;
+        }
+
+        .image-portal:hover {
+            background: rgba(57,255,20,0.2);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--neon-green);
+        }
+
+        /* BOTONES DE ACCIÓN INTERACTIVOS */
+        .action-buttons {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+
+        .cosmic-button {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .aqua-button { /* Renombrado a swim-button */
+            background: linear-gradient(45deg, var(--swim-primary), var(--swim-secondary)); /* Colores de natación */
+            color: white;
+            box-shadow: 0 5px 20px rgba(0,123,255,0.3); /* Color de natación */
+        }
+
+        .fire-button { /* Renombrado a box-button */
+            background: linear-gradient(45deg, var(--box-primary), var(--box-secondary)); /* Colores de boxeo */
+            color: white;
+            box-shadow: 0 5px 20px rgba(220,53,69,0.3); /* Color de boxeo */
+        }
+
+        .cosmic-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255,255,255,0.2);
+        }
+
+        .cosmic-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cosmic-button:hover::before {
+            left: 100%;
+        }
+
+        /* ANIMACIONES MEJORADAS */
+        @keyframes rainbow-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes digital-glitch {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+            51% { opacity: 1; transform: translateX(2px); }
+            52% { transform: translateX(0); }
+        }
+
+        @keyframes fire-cursor {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @keyframes orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse-aqua {
+            0%, 100% { box-shadow: 0 0 15px var(--swim-primary); } /* Color de natación */
+            50% { box-shadow: 0 0 40px var(--swim-primary); } /* Color de natación */
+        }
+
+        @keyframes pulse-fire {
+            0%, 100% { box-shadow: 0 0 15px var(--box-primary); } /* Color de boxeo */
+            50% { box-shadow: 0 0 40px var(--box-primary); } /* Color de boxeo */
+        }
+
+        @keyframes particle-float {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
+        }
+
+        @keyframes wave-motion {
+            0%, 100% { transform: translateX(-50%) skewX(0deg); }
+            50% { transform: translateX(-40%) skewX(5deg); }
+        }
+
+        @keyframes aqua-glow {
+            from { text-shadow: 0 0 30px var(--swim-primary); } /* Color de natación */
+            to { text-shadow: 0 0 60px var(--swim-primary), 0 0 90px var(--swim-accent); } /* Color de natación */
+        }
+
+        @keyframes bubble-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-25px); }
+        }
+
+        @keyframes flame-dance {
+            0%, 100% { transform: translateY(0) translateX(0) scaleY(1); opacity: 1; }
+            50% { transform: translateY(-30px) translateX(10px) scaleY(1.5); opacity: 0.8; }
+            75% { transform: translateY(-50px) translateX(-10px) scaleY(0.7); opacity: 0.5; }
+        }
+
+        @keyframes fire-glow {
+            from { text-shadow: 0 0 30px var(--box-primary); } /* Color de boxeo */
+            to { text-shadow: 0 0 60px var(--box-primary), 0 0 90px var(--box-accent); } /* Color de boxeo */
+        }
+
+        @keyframes orbit-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes planet-pulse-aqua {
+            0%, 100% { box-shadow: 0 0 100px var(--swim-primary); } /* Color de natación */
+            50% { box-shadow: 0 0 150px var(--swim-accent); } /* Color de natación */
+        }
+
+        @keyframes planet-pulse-fire {
+            0%, 100% { box-shadow: 0 0 100px var(--box-primary); } /* Color de boxeo */
+            50% { box-shadow: 0 0 150px var(--box-accent); } /* Color de boxeo */
+        }
+
+        @keyframes portal-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* MEDIA QUERIES PARA RESPONSIVIDAD */
+        @media (max-width: 1024px) {
+            .main-logo {
+                font-size: 3rem;
+            }
+
+            .subtitle-tech {
+                font-size: 1.4rem;
+            }
+
+            .aqua-title, .fire-title {
+                font-size: 3rem;
+            }
+
+            .bubble-network, .boxing-techniques, .dimension-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 40px;
+            }
+
+            .info-bubble {
+                width: 280px;
+                height: 280px;
+                padding: 30px;
+            }
+
+            .lane {
+                height: 250px;
+            }
+
+            .galaxy-container {
+                grid-template-columns: 1fr;
+                gap: 50px;
+                padding: 30px;
+            }
+
+            .planet-system {
+                width: 350px;
+                height: 350px;
+                margin: 0 auto;
+            }
+
+            .planet-core {
+                width: 150px;
+                height: 150px;
+                font-size: 2rem;
+            }
+
+            .satellite {
+                width: 60px;
+                height: 60px;
+                font-size: 10px;
+            }
+
+            .vs-portal {
+                width: 120px;
+                height: 120px;
+                font-size: 2.5rem;
+            }
+
+            .gallery-title {
+                font-size: 2.5rem;
+            }
+
+            .glove-orbit {
+                margin: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .orbital-nav {
+                top: 20px;
+                right: 20px;
+                width: 90px;
+                height: 90px;
+            }
+
+            .nav-planet {
+                width: 15px;
+                height: 15px;
+            }
+
+            .main-logo {
+                font-size: 2.5rem;
+            }
+
+            .subtitle-tech {
+                font-size: 1.2rem;
+            }
+
+            .aqua-title, .fire-title {
+                font-size: 2.5rem;
+                margin-bottom: 50px;
+            }
+
+            .aqua-content, .fire-content {
+                padding: 70px 20px;
+            }
+
+            .bubble-network, .boxing-techniques, .dimension-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .info-bubble {
+                width: 90%;
+                height: 300px; /* Ajustar altura para móvil */
+                border-radius: 20px; /* Menos redondo para móvil */
+            }
+
+            .image-slot {
+                width: 100px;
+                height: 60px;
+            }
+
+            .pool-lanes {
+                grid-template-columns: repeat(4, 1fr); /* Menos columnas en tablet */
+            }
+
+            .lane {
+                height: 200px;
+            }
+
+            .ring-structure {
+                width: 400px;
+                height: 400px;
+            }
+
+            .ring-side {
+                width: 200px;
+                height: 40px;
+                border-radius: 20px;
+            }
+
+            .ring-center {
+                width: 180px;
+                height: 180px;
+            }
+
+            .glove-constellation {
+                flex-direction: column;
+            }
+
+            .glove-orbit {
+                width: 300px;
+                height: 300px;
+                margin: 20px;
+            }
+
+            .info-glove {
+                width: 80px;
+                height: 80px;
+            }
+
+            .galactic-comparison {
+                min-height: 100vh;
+            }
+
+            .galaxy-container {
+                gap: 30px;
+            }
+
+            .planet-system {
+                width: 280px;
+                height: 280px;
+            }
+
+            .planet-core {
+                width: 120px;
+                height: 120px;
+                font-size: 1.8rem;
+            }
+
+            .satellite {
+                width: 50px;
+                height: 50px;
+                font-size: 9px;
+            }
+
+            .vs-portal {
+                width: 100px;
+                height: 100px;
+                font-size: 2rem;
+            }
+
+            .dimensional-gallery {
+                margin: 100px 0;
+            }
+
+            .gallery-title {
+                font-size: 2rem;
+                margin-bottom: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div>
+
+    <div class="orbital-nav">
+        <div class="nav-orbit"></div>
+        <div class="nav-planet aqua" data-target="swimming-pool-section">🏊‍♂️</div>
+        <div class="nav-planet fire" data-target="boxing-arena-section">🥊</div>
+    </div>
+
+    <header class="cosmic-header">
+        <div class="particle-system"></div>
+        <div class="cosmic-title">
+            <h1 class="main-logo">🏊‍♂️ Natación vs Boxeo 🥊</h1>
+            <p class="subtitle-tech">Explorando la Agilidad Acuática y la Potencia Pugilística</p>
+            <div class="action-buttons">
+                <button class="cosmic-button aqua-button" data-scroll="swimming-pool-section">Descubre Natación</button>
+                <button class="cosmic-button fire-button" data-scroll="boxing-arena-section">Explora Boxeo</button>
+            </div>
+        </div>
+    </header>
+
+    <section id="swimming-pool-section" class="aqua-realm">
+        <div class="wave-container">
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+        </div>
+        <div class="aqua-content">
+            <h2 class="aqua-title">El Reino Acuático: Natación de Élite</h2>
+            <div class="bubble-network">
+                <div class="info-bubble">
+                    <h3>Estilos Fundamentales</h3>
+                    <div class="image-slot">
+                        <img src="4est.jpeg" alt="Ilustración del duelo Natación vs Boxeo" style="max-width: 100%; height: auto; display: block;">
+                    </div>
+                    <p>Dominando las técnicas clásicas para la máxima eficiencia y velocidad en el agua.</p>
+                </div>
+                <div class="info-bubble">
+                    <h3>Beneficios Integrales</h3>
+                    <div class="image-slot">
+                        <img src="sal.jpg" alt="Ilustración del duelo Natación vs Boxeo" style="max-width: 100%; height: auto; display: block;">
+                    </div>
+                    <p>Un entrenamiento completo que fortalece el cuerpo sin estrés en las articulaciones.</p>
+                </div>
+                <div class="info-bubble">
+                    <h3>Entrenamiento de Resistencia</h3>
+                    <div class="image-slot">
+                        <img src="met.jpeg" alt="Ilustración del duelo Natación vs Boxeo" style="max-width: 100%; height: auto; display: block;">
+                    </div>
+                    <p>Desarrolla una resistencia pulmonar y muscular inigualable para cualquier desafío.</p>
+                </div>
+            </div>
+
+            <div class="olympic-pool">
+                <h3 class="aqua-title">Pista Olímpica: Carreras y Récords</h3>
+                <div class="pool-structure">
+                    <div class="pool-lanes">
+                        <div class="lane">
+                            <span class="lane-number">1</span>
+                            <span class="lane-style">Crol Veloz</span>
+                        </div>
+                        <div class="lane">
+                            <span class="lane-number">2</span>
+                            <span class="lane-style">Espalda Precisa</span>
+                        </div>
+                        <div class="lane">
+                            <span class="lane-number">3</span>
+                            <span class="lane-style">Braza Potente</span>
+                        </div>
+                        <div class="lane">
+                            <span class="lane-number">4</span>
+                            <span class="lane-style">Mariposa Épica</span>
+                        </div>
+                        <div class="lane">
+                            <span class="lane-number">5</span>
+                            <span class="lane-style">Mixtos Individual</span>
+                        </div>
+                        <div class="lane">
+                            <span class="lane-number">6</span>
+                            <span class="lane-style">Relevos Libres</span>
+                        </div>
+                        <div class="lane">
+                            <span class="lane-number">7</span>
+                            <span class="lane-style">Aguas Abiertas</span>
+                        </div>
+                        <div class="lane">
+                            <span class="lane-number">8</span>
+                            <span class="lane-style">Sincronizada</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="boxing-arena-section" class="fire-arena">
+        <div class="fire-particles"></div>
+        <div class="fire-content">
+            <h2 class="fire-title">La Arena Ardiente: El Poder del Boxeo</h2>
+            <div class="hexagon-ring">
+                <div class="ring-structure">
+                    <div class="ring-side"></div>
+                    <div class="ring-side"></div>
+                    <div class="ring-side"></div>
+                    <div class="ring-side"></div>
+                    <div class="ring-side"></div>
+                    <div class="ring-side"></div>
+                    <div class="ring-center">
+                        <h4>¡El Ring Te Espera!</h4>
+                        <p>Cada Golpe Cuenta</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="boxing-techniques">
+                <div class="technique-card">
+                    <span class="technique-emoji">👊</span>
+                    <h3 class="technique-name">Jab y Cross</h3>
+                    <p class="technique-stats">Velocidad: ⭐⭐⭐⭐⭐<br>Potencia: ⭐⭐⭐⭐<br>Precisión: ⭐⭐⭐⭐</p>
+                </div>
+                <div class="technique-card">
+                    <span class="technique-emoji">💥</span>
+                    <h3 class="technique-name">Gancho y Uppercut</h3>
+                    <p class="technique-stats">Velocidad: ⭐⭐⭐⭐<br>Potencia: ⭐⭐⭐⭐⭐<br>Precisión: ⭐⭐⭐</p>
+                </div>
+                <div class="technique-card">
+                    <span class="technique-emoji"> dodging </span>
+                    <h3 class="technique-name">Movimiento de Pies y Defensa</h3>
+                    <p class="technique-stats">Agilidad: ⭐⭐⭐⭐⭐<br>Evasión: ⭐⭐⭐⭐⭐<br>Equilibrio: ⭐⭐⭐⭐</p>
+                </div>
+                <div class="technique-card">
+                    <span class="technique-emoji">🧠</span>
+                    <h3 class="technique-name">Estrategia y Contragolpe</h3>
+                    <p class="technique-stats">Inteligencia: ⭐⭐⭐⭐⭐<br>Reacción: ⭐⭐⭐⭐<br>Timing: ⭐⭐⭐⭐⭐</p>
+                </div>
+            </div>
+
+            <div class="glove-constellation">
+                <div class="glove-orbit">
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    <div class="info-glove glove-1">Guantes Pesados</div>
+                    <div class="info-glove glove-2">Vendajes</div>
+                    <div class="info-glove glove-3">Entrenamiento</div>
+                    <div class="info-glove glove-4">Fuerza</div>
+                </div>
+                <div class="glove-orbit">
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    <div class="info-glove glove-1">Saco de Arena</div>
+                    <div class="info-glove glove-2">Pera de Velocidad</div>
+                    <div class="info-glove glove-3">Cuerda</div>
+                    <div class="info-glove glove-4">Espejo</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="galactic-comparison">
+        <div class="galaxy-container">
+            <div class="planet-system">
+                <div class="planet-core aqua-planet">
+                    Natación
+                </div>
+                <div class="satellite" style="top: 10%; left: 70%; background: var(--swim-accent); box-shadow: 0 0 20px var(--swim-accent);">Resistencia</div>
+                <div class="satellite" style="bottom: 15%; left: 20%; background: var(--swim-accent); box-shadow: 0 0 20px var(--swim-accent);">Técnica</div>
+                <div class="satellite" style="top: 40%; right: -10%; background: var(--swim-accent); box-shadow: 0 0 20px var(--swim-accent);">Disciplina</div>
+            </div>
+
+            <div class="vs-portal">VS</div>
+
+            <div class="planet-system">
+                <div class="planet-core fire-planet">
+                    Boxeo
+                </div>
+                <div class="satellite" style="top: 10%; left: 70%; background: var(--box-accent); box-shadow: 0 0 20px var(--box-accent);">Potencia</div>
+                <div class="satellite" style="bottom: 15%; left: 20%; background: var(--box-accent); box-shadow: 0 0 20px var(--box-accent);">Estrategia</div>
+                <div class="satellite" style="top: 40%; right: -10%; background: var(--box-accent); box-shadow: 0 0 20px var(--box-accent);">Agilidad</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="dimensional-gallery">
+        <h2 class="gallery-title">Galería de Campeones</h2>
+        <div class="dimension-grid">
+            <div class="dimension-card">
+                <h3>Leyendas Acuáticas</h3>
+                <div class="image-portal">
+                    <img src="nat.jpeg" alt="Ilustración del duelo Natación vs Boxeo" style="max-width: 100%; height: auto; display: block;">
+                </div>
+                <p>Explora la historia de los más grandes nadadores y sus hazañas.</p>
+            </div>
+            <div class="dimension-card">
+                <h3>Íconos del Ring</h3>
+                <div class="image-portal">
+                    <img src="can.avif" alt="Ilustración del duelo Natación vs Boxeo" style="max-width: 100%; height: auto; display: block;">
+                </div>
+                <p>Conoce a los púgiles que forjaron su leyenda golpe a golpe.</p>
+            </div>
+            <div class="dimension-card">
+    <h3>El Duelo Definitivo</h3>
+    <div class="image-portal">
+        <img src="amb.jpeg" alt="Ilustración del duelo Natación vs Boxeo" style="max-width: 100%; height: auto; display: block;">
+    </div>
+    <p>Un análisis de las habilidades transferibles entre ambas disciplinas.</p>
+</div>
+        </div>
+    </section>
+
+    <div class="action-buttons">
+        <button class="cosmic-button aqua-button" data-scroll="swimming-pool-section">Más de Natación</button>
+        <button class="cosmic-button fire-button" data-scroll="boxing-arena-section">Más de Boxeo</button>
+    </div>
+
+    <script>
+        // JavaScript para el cursor personalizado
+        const cursor = document.querySelector('.cursor');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Toggle del cursor y cambio de modo al hacer click en los planetas de navegación
+        document.querySelector('.nav-planet.aqua').addEventListener('click', () => {
+            cursor.classList.remove('fire-mode'); // Cambiado de 'fire-mode' a reflejar el tema de boxeo
+            document.getElementById('swimming-pool-section').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.querySelector('.nav-planet.fire').addEventListener('click', () => {
+            cursor.classList.add('fire-mode'); // Se mantiene 'fire-mode' para el estilo del cursor de boxeo
+            document.getElementById('boxing-arena-section').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Generar partículas dinámicamente para la sección de cabecera
+        const particleSystem = document.querySelector('.particle-system');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            particle.style.animationDuration = 5 + Math.random() * 5 + 's';
+            particleSystem.appendChild(particle);
+        }
+
+        // Generar partículas dinámicamente para la sección de boxeo
+        const fireParticlesContainer = document.querySelector('.fire-particles');
+        for (let i = 0; i < 70; i++) {
+            const flameParticle = document.createElement('div');
+            flameParticle.classList.add('flame-particle');
+            flameParticle.style.left = Math.random() * 100 + '%';
+            flameParticle.style.bottom = Math.random() * 100 + '%';
+            flameParticle.style.width = 2 + Math.random() * 5 + 'px';
+            flameParticle.style.height = 10 + Math.random() * 30 + 'px';
+            flameParticle.style.animationDelay = Math.random() * 4 + 's';
+            flameParticle.style.animationDuration = 2 + Math.random() * 3 + 's';
+            fireParticlesContainer.appendChild(flameParticle);
+        }
+
+        // Smooth scroll para los botones de acción
+        document.querySelectorAll('.cosmic-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const targetId = e.target.dataset.scroll;
+                document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
